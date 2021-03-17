@@ -1,0 +1,4 @@
+alias netflix="open https://www.netflix.com/browse"
+alias typor="open -a Typora"
+alias vim='mvim -v'
+alias mux=tmuxinator
