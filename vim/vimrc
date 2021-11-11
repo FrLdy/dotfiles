@@ -1,0 +1,181 @@
+call plug#begin()
+Plug 'sheerun/vim-polyglot'
+Plug 'joshdick/onedark.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'gsiano/vmux-clipboard'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'preservim/nerdcommenter'
+"Plug 'ajh17/VimCompletesMe'
+Plug 'davidhalter/jedi-vim'
+Plug 'ervandew/supertab'
+Plug 'jiangmiao/auto-pairs'
+Plug 'airblade/vim-gitgutter'
+Plug 'preservim/tagbar'
+Plug 'Shougo/unite.vim'
+Plug 'tmhedberg/SimpylFold'
+Plug 'dense-analysis/ale'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'alfredodeza/pytest.vim'
+" Initialize plugin system
+call plug#end()
+
+
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+if (empty($TMUX))
+    if (has("nvim"))
+        let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    endif
+    if (has("termguicolors"))
+        set termguicolors
+    endif
+endif
+
+syntax on
+set background=dark
+colorscheme onedark 
+set laststatus=2
+let g:lightline = {'colorscheme': 'wombat',}
+set noshowmode
+filetype on
+" -- remap keys ------------------------------------------
+let mapleader = ","
+
+" -- Line numbering ---------------------------------------
+set relativenumber
+set number
+set wildmenu
+set cursorline
+set ruler
+
+" -- Set Proper Tabs
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
+
+" -- search n replace -------------------
+noremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+set clipboard^=unnamed,unnamedplus
+" -- Nerd tree --------------------------------------------
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+autocmd VimEnter * wincmd p
+
+" Start NERDTree when Vim is started without file arguments.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+
+" Quit NERDTree when is the only window left.
+"autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * silent NERDTreeMirror
+
+" -- vmux yank ------------------------------------------------------------------
+let mapleader = ","
+map <silent> <leader>y :WriteToVmuxClipboard<cr>
+map <silent> <leader>p :ReadFromVmuxClipboard<cr>
+
+" -- tag bar -------------------------------
+nmap <F8> :TagbarToggle<CR>
+
+" -- supertab -------------------------------
+let g:SuperTabContextDefaultCompletionType = ""
+let g:SuperTabCrMapping = 1
+" -- ctrl P ---------------------------------
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_max_files=0
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_root_markers = "~/"
+
+" -- syntastic ---------------------------------------------
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
+" -- colde folding -------
+set foldmethod=indent
+set foldlevel=99
+" Enable folding with the spacebar
+nnoremap <space> za
+
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+
+" show errors or warnings in my statusline
+let g:airline#extensions#ale#enabled = 1
+
+" self-define statusline
+"function! LinterStatus() abort
+"    let l:counts = ale#statusline#Count(bufnr(''))
+"
+"    let l:all_errors = l:counts.error + l:counts.style_error
+"    let l:all_non_errors = l:counts.total - l:all_errors
+"
+"    return l:counts.total == 0 ? 'OK' : printf(
+"    \  '%dW %dE',
+"    \  all_non_errors,
+"    \  all_errors
+"    \)
+"endfunction
+"set statusline=%{LinterStatus()}
+
+" echo message
+" %s is the error message itself
+" %linter% is the linter name
+" %severity is the severity type
+" let g:ale_echo_msg_error_str = 'E'
+" let g:ale_echo_msg_warning_str = 'W'
+" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+" use quickfix list instead of the loclist
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
+" only enable these linters
+"let g:ale_linters = {
+"\    'javascript': ['eslint']
+"\}
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-J> <Plug>(ale_next_wrap)
+
+" run lint only on saving a file
+" let g:ale_lint_on_text_changed = 'never'
+" dont run lint on opening a file
+" let g:ale_lint_on_enter = 0
+
+" -- FZF ------------------------------------
+set rtp+=~/.fzf
+" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+
+" -- TAGBAR --------------
+autocmd FileType python,java TagbarOpen
+

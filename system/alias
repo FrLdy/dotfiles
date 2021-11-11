@@ -1,0 +1,8 @@
+#!/bin/bash
+
+alias netflix="open https://www.netflix.com/browse"
+alias typor="open -a Typora"
+alias vim='mvim -v'
+alias mux=tmuxinator
+alias pip="python3 -m pip"
+alias pycharm="open -a /Applications/PyCharm\ CE.app" 

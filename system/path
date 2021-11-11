@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function join { local IFS="$1"; shift; echo "$*"; }
+
+paths=( 
+    $PATH
+    $DOTFILES/bin 
+)
+
+PATH=$(join : ${paths[@]})
+export PATH=$PATH
+

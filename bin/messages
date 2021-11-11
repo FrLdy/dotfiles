@@ -1,0 +1,62 @@
+#!/bin/bash
+
+BIN_NAME=$(basename "$0")
+COMMAND_NAME=$1
+SUB_COMMAND_NAME=$2
+
+bold=$(tput bold)
+underline=$(tput sgr 0 1)
+reset=$(tput sgr0)
+
+purple=$(tput setaf 171)
+red=$(tput setaf 1)
+green=$(tput setaf 76)
+tan=$(tput setaf 3)
+blue=$(tput setaf 38)
+
+
+sub_header() { printf "\n${bold}${purple}==========  %s  ==========${reset}\n" "$@" 
+}
+sub_arrow() { printf "➜ $@\n"
+}
+sub_success() { printf "${green}✔ %s${reset}\n" "$@"
+}
+sub_error() { printf "${red}✖ %s${reset}\n" "$@"
+}
+sub_warning() { printf "${tan}➜ %s${reset}\n" "$@"
+}
+sub_underline() { printf "${underline}${bold}%s${reset}\n" "$@"
+}
+sub_bold() { printf "${bold}%s${reset}\n" "$@"
+}
+sub_note() { printf "${underline}${bold}${blue}Note:${reset}  ${blue}%s${reset}\n" "$@"
+}
+
+sub_help () {
+  echo "Usage: $BIN_NAME <command>"
+  echo
+  echo "Commands:"
+  echo "   header       $(sub_header "<text>")" 
+  echo "   arrow        $(sub_arrow "<text>")"
+  echo "   success      $(sub_success "<text>")"
+  echo "   error        $(sub_error "<text>")"
+  echo "   warning      $(sub_warning "<text>")"
+  echo "   underline    $(sub_underline "<text>")"
+  echo "   bold         $(sub_bold "<text>")"
+  echo "   note         $(sub_note "<text>")"
+}
+
+case $COMMAND_NAME in
+  "" | "-h" | "--help")
+    sub_help
+    ;;
+  *)
+    shift
+    sub_${COMMAND_NAME} $@
+    if [ $? = 127 ]; then
+      echo "'$COMMAND_NAME' is not a known command or has errors." >&2
+      sub_help
+      exit 1
+    fi
+    ;;
+esac
