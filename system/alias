@@ -6,3 +6,5 @@ alias vim='mvim -v'
 alias mux=tmuxinator
 alias pip="python3 -m pip"
 alias pycharm="open -a /Applications/PyCharm\ CE.app" 
+alias lz="lazygit"
+alias source-zsh="source $HOME/.zshrc"
