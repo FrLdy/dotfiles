@@ -59,7 +59,13 @@ set expandtab
 " -- search n replace -------------------
 noremap <Leader>s :%s/\<<C-r><C-w>\>/
 
+" -- clipboard --------------------------
 set clipboard^=unnamed,unnamedplus
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
+
 " -- Nerd tree --------------------------------------------
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
