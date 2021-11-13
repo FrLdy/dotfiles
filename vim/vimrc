@@ -44,7 +44,6 @@ filetype on
 let mapleader = ","
 
 " -- Line numbering ---------------------------------------
-set relativenumber
 set number
 set wildmenu
 set cursorline
