@@ -1,15 +1,15 @@
 export DOTFILES="$HOME/git/dotfiles"
 
+source $ZSH/oh-my-zsh.sh
+
 source $DOTFILES/system/env
 source $DOTFILES/system/path
 source $DOTFILES/system/alias
 
-source $ZSH/oh-my-zsh.sh
 
 source $DOTFILES/zsh/plugins.zsh
 
 source $DOTFILES/zsh/prompt.zsh
-
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

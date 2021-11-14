@@ -1,0 +1,11 @@
+#!/bin/bash
+
+dockutil --no-restart --remove all
+dockutil --no-restart --add "/Applications/Safari.app"
+dockutil --no-restart --add "/System/Applications/Mail.app"
+dockutil --no-restart --add "/System/Applications/Calendar.app"
+dockutil --no-restart --add "/Applications/iTerm.app"
+dockutil --no-restart --add "/Applications/Notion.app"
+dockutil --no-restart --add "/Applications/Deezer.app"
+
+killall Dock
