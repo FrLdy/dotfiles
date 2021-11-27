@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-
-if [[ "$OSTYPE" =~ ^darwin ]]; then
-  exit 0
-else
-  exit 1
+if [[ $OSTYPE =~ "^darwin" ]] ; then
+    echo true
+else 
+    echo false
 fi
+
