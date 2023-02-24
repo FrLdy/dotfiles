@@ -5,6 +5,9 @@ function join { local IFS="$1"; shift; echo "$*"; }
 paths=( 
     $PATH
     $DOTFILES/bin 
+    $HOME/.local/bin
+    $HOME/go/
+    /usr/local/lib/node_modules
 )
 
 PATH=$(join : ${paths[@]})

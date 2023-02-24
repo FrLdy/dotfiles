@@ -1,19 +1,20 @@
 #!/bin/bash
-
-alias netflix="open https://www.netflix.com/browse"
-alias typor="open -a Typora"
-[ is-macos ] && alias vim='mvim -v'
 alias mux="tmuxinator"
-alias pip="python3 -m pip"
-alias pycharm="open -a /Applications/PyCharm\ CE.app" 
+alias vim="nvim"
 alias lz="lazygit"
 alias source-zsh="source $HOME/.zshrc"
-
 # --- LS ------------------------------------------------------
 if [ -x "$(command -v exa)" ]; then
-    alias ls="exa --icons"
-    alias la="ls --long --all --group"
+    alias ls='exa --icons'
+    alias la='ls --long --all --group'
     alias lt='ls --tree'
     alias ll='ls --long --header --group-directories-first'
     alias la='ll -a'
+fi
+
+alias l="lf"
+LFCD="$HOME/.config/lf/lfcd.sh"
+if [ -f "$LFCD" ]; then
+    source "$LFCD"
+    bindkey -s '^o' 'lfcd\n'  # zsh
 fi

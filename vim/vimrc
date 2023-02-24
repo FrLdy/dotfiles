@@ -8,8 +8,9 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'gsiano/vmux-clipboard'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'preservim/nerdcommenter'
-"Plug 'ajh17/VimCompletesMe'
+Plug 'Valloric/YouCompleteMe'
 Plug 'davidhalter/jedi-vim'
+Plug 'derekwyatt/vim-fswitch'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
@@ -41,6 +42,10 @@ set laststatus=2
 let g:lightline = {'colorscheme': 'wombat',}
 set noshowmode
 filetype on
+filetype plugin on
+" " Press Space to turn off highlighting and clear any message already displayed.
+set hlsearch
+:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 " -- remap keys ------------------------------------------
 let mapleader = ","
 
@@ -60,11 +65,13 @@ set expandtab
 noremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 " -- clipboard --------------------------
-set clipboard^=unnamed,unnamedplus
-noremap <Leader>y "*y
-noremap <Leader>p "*p
-noremap <Leader>Y "+y
-noremap <Leader>P "+p
+"set clipboard^=unnamed,unnamedplus
+map <silent> <leader>y :WriteToVmuxClipboard<cr>
+map <silent> <leader>p :ReadFromVmuxClipboard<cr>
+"noremap <Leader>y "*y
+"noremap <Leader>p "*p
+"noremap <Leader>Y "+y
+"noremap <Leader>P "+p
 
 " -- Nerd tree --------------------------------------------
 nnoremap <leader>n :NERDTreeFocus<CR>
@@ -86,9 +93,13 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 
 " Open the existing NERDTree on each new tab.
 autocmd BufWinEnter * silent NERDTreeMirror
+" -- tab ------------------------------------------------------------------
+map <C-L> gt
+map <C-H> gT
+ca tn tabnew
+ca tc tabclose
 
 " -- vmux yank ------------------------------------------------------------------
-let mapleader = ","
 map <silent> <leader>y :WriteToVmuxClipboard<cr>
 map <silent> <leader>p :ReadFromVmuxClipboard<cr>
 
@@ -119,7 +130,7 @@ let g:ctrlp_root_markers = "~/"
 set foldmethod=indent
 set foldlevel=99
 " Enable folding with the spacebar
-nnoremap <space> za
+"nnoremap <space> za
 
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = '>>'
@@ -185,3 +196,15 @@ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-h
 " -- TAGBAR --------------
 autocmd FileType python,java TagbarOpen
 
+set wildcharm=<tab>
+
+
+" -- C++ Header --------------------------------
+function! s:insert_gates()
+  let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+  execute "normal! i#ifndef " . gatename
+  execute "normal! o#define " . gatename . " "
+  execute "normal! Go#endif /* " . gatename . " */"
+  normal! kk
+endfunction
+autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()

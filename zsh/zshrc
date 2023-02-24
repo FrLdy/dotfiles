@@ -1,16 +1,12 @@
 export DOTFILES="$HOME/git/dotfiles"
-
 source $ZSH/oh-my-zsh.sh
+source $DOTFILES/zsh/plugins.zsh
+source $DOTFILES/zsh/prompt.zsh
+autoload -U compinit && compinit
 
 source $DOTFILES/system/env
 source $DOTFILES/system/path
 source $DOTFILES/system/alias
 
-
-source $DOTFILES/zsh/plugins.zsh
-
-source $DOTFILES/zsh/prompt.zsh
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
+source $HOME/.config/lf/LF_ICONS
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
